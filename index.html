@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-50">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ABC School Management System</title>
+  
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy: {
+              800: '#1E293B',
+              900: '#0F172A',
+            },
+            emerald: {
+              500: '#10B981',
+              600: '#059669',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="h-full text-slate-900 antialiased flex flex-col selection:bg-emerald-500 selection:text-white">
+
+  <!-- TOP GLASSMORMIC HEADER & ROLE SWITCHER BAR -->
+  <header class="sticky top-0 z-40 glass-nav text-white shadow-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        
+        <!-- Logo & School Name -->
+        <div class="flex items-center gap-3 cursor-pointer" onclick="window.app && window.app.switchRole('principal')">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center text-white shadow-lg shadow-emerald-500/30 font-extrabold text-xl">
+            ABC
+          </div>
+          <div>
+            <span class="font-extrabold text-lg tracking-tight block leading-tight text-white">ABC School</span>
+            <span class="text-[10px] text-slate-400 font-medium tracking-wider uppercase block">Management System</span>
+          </div>
+        </div>
+
+        <!-- Role Based Access Gateway Switcher (Desktop) -->
+        <nav class="hidden md:flex items-center gap-1 bg-slate-800/80 p-1.5 rounded-2xl border border-slate-700/60 shadow-inner">
+          <button data-role-switch="principal" class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all bg-emerald-500 text-white shadow-sm flex items-center gap-1.5">
+            <span>👑</span> Principal Admin
+          </button>
+          <button data-role-switch="parent" class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all text-slate-300 hover:bg-slate-800 flex items-center gap-1.5">
+            <span>👨‍👩‍👧‍👦</span> Parent Portal
+          </button>
+          <button data-role-switch="teacher" class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all text-slate-300 hover:bg-slate-800 flex items-center gap-1.5">
+            <span>👨‍🏫</span> Teacher Register
+          </button>
+          <button data-role-switch="student" class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all text-slate-300 hover:bg-slate-800 flex items-center gap-1.5">
+            <span>🎓</span> Student View
+          </button>
+        </nav>
+
+        <!-- Mobile Drawer Toggle Button -->
+        <button id="mobile-menu-btn" class="md:hidden p-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800 focus:outline-none">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Drawer Menu -->
+    <div id="mobile-drawer" class="hidden md:hidden border-t border-slate-800 bg-slate-900 px-4 pt-2 pb-4 space-y-2">
+      <button data-role-switch="principal" class="w-full text-left px-4 py-2.5 rounded-xl text-xs font-bold bg-emerald-500 text-white flex items-center gap-2">
+        <span>👑</span> Principal Admin Gateway
+      </button>
+      <button data-role-switch="parent" class="w-full text-left px-4 py-2.5 rounded-xl text-xs font-bold text-slate-300 hover:bg-slate-800 flex items-center gap-2">
+        <span>👨‍👩‍👧‍👦</span> Parent Portal Gateway
+      </button>
+      <button data-role-switch="teacher" class="w-full text-left px-4 py-2.5 rounded-xl text-xs font-bold text-slate-300 hover:bg-slate-800 flex items-center gap-2">
+        <span>👨‍🏫</span> Teacher Attendance Register
+      </button>
+      <button data-role-switch="student" class="w-full text-left px-4 py-2.5 rounded-xl text-xs font-bold text-slate-300 hover:bg-slate-800 flex items-center gap-2">
+        <span>🎓</span> Student Portal
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN APP CONTAINER -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div id="app-content">
+      <!-- Dynamically Rendered by js/app.js -->
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-white border-t border-slate-200 py-6 mt-12 text-slate-500 text-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div>
+        <span class="font-bold text-slate-800">ABC School Management System</span> &bull; Production-Ready SaaS Application
+      </div>
+      <div class="flex items-center gap-4">
+        <span>Automated Sibling Discount Engine: 1 Child (0%), 2 Siblings (10%), 3+ Siblings (20%)</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========================================== -->
+  <!-- MODAL 1: FAMILY & SIBLING ADMISSION MODAL  -->
+  <!-- ========================================== -->
+  <div id="admission-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 hidden animate-fade-in">
+    <div class="bg-white rounded-3xl max-w-2xl w-full p-6 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto border border-slate-200">
+      
+      <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+        <div>
+          <h3 class="text-xl font-extrabold text-slate-900">Multi-Student Family Admission</h3>
+          <p class="text-xs text-slate-500 mt-0.5">Enrolling siblings under a single Parent ID automatically applies sibling discounts.</p>
+        </div>
+        <button data-close-modal="admission-modal" class="p-2 text-slate-400 hover:text-slate-600 rounded-xl hover:bg-slate-100">
+          ✕
+        </button>
+      </div>
+
+      <!-- Live Discount Preview Indicator -->
+      <div id="admission-discount-preview">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <form id="admission-form" class="space-y-6">
+        <!-- Parent Details Section -->
+        <div class="space-y-3">
+          <h4 class="text-xs font-extrabold uppercase tracking-wider text-slate-400 font-mono">1. Parent / Guardian Details</h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Parent Full Name *</label>
+              <input type="text" id="adm-parent-name" required placeholder="e.g. Tariq Khan" class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-slate-900 focus:outline-none" />
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Parent Email *</label>
+              <input type="email" id="adm-parent-email" required placeholder="tariq@email.com" class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-slate-900 focus:outline-none" />
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Contact Phone *</label>
+              <input type="text" id="adm-parent-phone" required placeholder="+1 (555) 0192" class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-slate-900 focus:outline-none" />
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Parent ID (Optional/Auto)</label>
+              <input type="text" id="adm-parent-id" placeholder="Auto-generated PAR-XXX" class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-slate-900 focus:outline-none" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Children Details Section -->
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <h4 class="text-xs font-extrabold uppercase tracking-wider text-slate-400 font-mono">2. Children to Enroll</h4>
+            <button type="button" id="add-child-row-btn" class="text-xs font-bold text-emerald-600 hover:text-emerald-700 bg-emerald-50 px-3 py-1 rounded-lg border border-emerald-200">
+              + Add Another Sibling
+            </button>
+          </div>
+
+          <div id="children-rows-container" class="space-y-3">
+            <div class="child-admission-row bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3">
+              <div class="flex items-center justify-between text-xs font-bold text-slate-800">
+                <span>Child #1 Details</span>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div>
+                  <label class="block text-[10px] font-bold text-slate-600 mb-1">Student Full Name *</label>
+                  <input type="text" required placeholder="e.g. Ahmed Khan" class="adm-child-name w-full px-3 py-1.5 bg-white border border-slate-200 rounded-xl text-xs font-semibold" />
+                </div>
+                <div>
+                  <label class="block text-[10px] font-bold text-slate-600 mb-1">Select Grade (1-10) *</label>
+                  <select class="adm-child-grade w-full px-3 py-1.5 bg-white border border-slate-200 rounded-xl text-xs font-semibold">
+                    <option value="1">Grade 1 (Rs. 5,000/mo base)</option>
+                    <option value="2">Grade 2 (Rs. 5,000/mo base)</option>
+                    <option value="3">Grade 3 (Rs. 5,500/mo base)</option>
+                    <option value="4">Grade 4 (Rs. 6,000/mo base)</option>
+                    <option value="5">Grade 5 (Rs. 6,500/mo base)</option>
+                    <option value="6">Grade 6 (Rs. 7,000/mo base)</option>
+                    <option value="7">Grade 7 (Rs. 7,500/mo base)</option>
+                    <option value="8" selected>Grade 8 (Rs. 8,000/mo base)</option>
+                    <option value="9">Grade 9 (Rs. 9,000/mo base)</option>
+                    <option value="10">Grade 10 (Rs. 10,000/mo base)</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-[10px] font-bold text-slate-600 mb-1">Upload Photo (Optional)</label>
+                  <input type="file" accept="image/*" class="adm-child-photo w-full text-xs text-slate-600 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 cursor-pointer" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
+          <button type="button" data-close-modal="admission-modal" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100">
+            Cancel
+          </button>
+          <button type="submit" class="px-5 py-2.5 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-white shadow-lg">
+            Complete Admission & Apply Sibling Discount
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL 2: PRINTABLE INVOICE MODAL           -->
+  <!-- ========================================== -->
+  <div id="invoice-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 hidden animate-fade-in">
+    <div class="bg-white rounded-3xl max-w-xl w-full p-6 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto border border-slate-200">
+      <div class="flex justify-end no-print">
+        <button onclick="window.print()" class="bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-4 py-2 rounded-xl shadow-md mr-2">
+          🖨️ Print / Save PDF
+        </button>
+        <button data-close-modal="invoice-modal" class="p-2 text-slate-400 hover:text-slate-600 rounded-xl hover:bg-slate-100">
+          ✕
+        </button>
+      </div>
+
+      <div id="invoice-modal-content">
+        <!-- Rendered dynamically by js/app.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL 3: PRINTABLE REPORT CARD MODAL       -->
+  <!-- ========================================== -->
+  <div id="report-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 hidden animate-fade-in">
+    <div class="bg-white rounded-3xl max-w-2xl w-full p-6 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto border border-slate-200">
+      <div class="flex justify-end no-print">
+        <button onclick="window.print()" class="bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-4 py-2 rounded-xl shadow-md mr-2">
+          🖨️ Print Report Card
+        </button>
+        <button data-close-modal="report-modal" class="p-2 text-slate-400 hover:text-slate-600 rounded-xl hover:bg-slate-100">
+          ✕
+        </button>
+      </div>
+
+      <div id="report-modal-content">
+        <!-- Rendered dynamically by js/app.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Application Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    // Dynamic Add Child Row Logic for Admission Modal
+    document.addEventListener("DOMContentLoaded", () => {
+      const addBtn = document.getElementById("add-child-row-btn");
+      const container = document.getElementById("children-rows-container");
+
+      if (addBtn && container) {
+        addBtn.addEventListener("click", () => {
+          const rowCount = container.querySelectorAll(".child-admission-row").length + 1;
+          const row = document.createElement("div");
+          row.className = "child-admission-row bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3 animate-fade-in";
+          row.innerHTML = `
+            <div class="flex items-center justify-between text-xs font-bold text-slate-800">
+              <span>Child #${rowCount} Details</span>
+              <button type="button" class="remove-child-row text-xs text-rose-600 hover:underline">Remove</button>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div>
+                <label class="block text-[10px] font-bold text-slate-600 mb-1">Student Full Name *</label>
+                <input type="text" required placeholder="Full Name" class="adm-child-name w-full px-3 py-1.5 bg-white border border-slate-200 rounded-xl text-xs font-semibold" />
+              </div>
+              <div>
+                <label class="block text-[10px] font-bold text-slate-600 mb-1">Select Grade (1-10) *</label>
+                <select class="adm-child-grade w-full px-3 py-1.5 bg-white border border-slate-200 rounded-xl text-xs font-semibold">
+                  <option value="1">Grade 1 (Rs. 5,000/mo base)</option>
+                  <option value="2">Grade 2 (Rs. 5,000/mo base)</option>
+                  <option value="3">Grade 3 (Rs. 5,500/mo base)</option>
+                  <option value="4">Grade 4 (Rs. 6,000/mo base)</option>
+                  <option value="5" selected>Grade 5 (Rs. 6,500/mo base)</option>
+                  <option value="6">Grade 6 (Rs. 7,000/mo base)</option>
+                  <option value="7">Grade 7 (Rs. 7,500/mo base)</option>
+                  <option value="8">Grade 8 (Rs. 8,000/mo base)</option>
+                  <option value="9">Grade 9 (Rs. 9,000/mo base)</option>
+                  <option value="10">Grade 10 (Rs. 10,000/mo base)</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-[10px] font-bold text-slate-600 mb-1">Upload Photo (Optional)</label>
+                <input type="file" accept="image/*" class="adm-child-photo w-full text-xs text-slate-600 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 cursor-pointer" />
+              </div>
+            </div>
+          `;
+          container.appendChild(row);
+          
+          row.querySelector(".remove-child-row").addEventListener("click", () => {
+            row.remove();
+            if (window.app) window.app.updateAdmissionFormDiscountPreview();
+          });
+
+          if (window.app) window.app.updateAdmissionFormDiscountPreview();
+        });
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,156 @@
+/* ABC School Management System - Custom SaaS Styling */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --font-main: 'Plus Jakarta Sans', sans-serif;
+  --color-navy-dark: #0F172A;
+  --color-navy: #1E293B;
+  --color-emerald: #10B981;
+  --color-emerald-dark: #059669;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: #F8FAFC;
+  color: #1E293B;
+  overflow-x: hidden;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #F1F5F9;
+}
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
+
+/* Glassmorphism & Soft Cards */
+.glass-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
+}
+
+.glass-nav {
+  background: rgba(15, 23, 42, 0.96);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Micro Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes popIn {
+  0% { transform: scale(0.95); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.35s ease-out forwards;
+}
+
+.animate-pop-in {
+  animation: popIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Attendance Toggle Button Styling */
+.attendance-btn-present {
+  background-color: #ECFDF5;
+  color: #047857;
+  border: 2px solid #10B981;
+}
+.attendance-btn-present.active {
+  background-color: #10B981;
+  color: #FFFFFF;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
+}
+
+.attendance-btn-absent {
+  background-color: #FEF2F2;
+  color: #B91C1C;
+  border: 2px solid #EF4444;
+}
+.attendance-btn-absent.active {
+  background-color: #EF4444;
+  color: #FFFFFF;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.35);
+}
+
+/* Attendance Register Physical Book Look */
+.register-book {
+  background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+  border-radius: 1rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* Printable Styles for Invoice & Report Card */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .printable-area, .printable-area * {
+    visibility: visible;
+  }
+  .printable-area {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    padding: 20px;
+    background: white !important;
+    color: black !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+}
+
+/* Custom Table Polish */
+table tbody tr {
+  transition: all 0.15s ease;
+}
+table tbody tr:hover {
+  background-color: #F8FAFC;
+}
+
+/* Photo Upload Overlay & Styling */
+.avatar-container {
+  position: relative;
+  display: inline-block;
+}
+.avatar-upload-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(2px);
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+  cursor: pointer;
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+}
+.avatar-container:hover .avatar-upload-overlay {
+  opacity: 1;
+}
+
